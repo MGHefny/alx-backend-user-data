@@ -5,6 +5,7 @@ import re
 import logging
 import os
 import mysql.connector
+from mysql.connector import connection
 
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "u_pass")
@@ -44,7 +45,8 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         user=u_name_db,
         password=u_pass,
         host=local_host_db,
-        database=name_db)
+        database=name_db
+        )
     return cnn
 
 
