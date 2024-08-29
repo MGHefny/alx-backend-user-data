@@ -4,7 +4,8 @@ from typing import List
 import re
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
     """ filter datum message """
     for x in fields:
         message = re.sub(f'{x}=.*?{separator}',
