@@ -5,13 +5,15 @@ import bcrypt
 
 def hash_password(password: str) -> bytes:
     """ re pass bytes """
-    encrip = password.encode('utf-8')
-    h_h = bcrypt.hashpw(bcrypt.gensalt(), encrip)
+    encoded = password.encode()
+    hashed = bcrypt.hashpw(encoded, bcrypt.gensalt())
 
-    return h_h
+    return hashed
 
 
 def is_valid(hashed_password: bytes, password: str) -> bool:
-    """ prov pass """
-    encrip = password.encode('utf-8')
-    return bcrypt.checkpw(encrip, hashed_password)
+    valid = False
+    encoded = password.encode()
+    if bcrypt.checkpw(encoded, hashed_password):
+        valid = True
+    return valid
