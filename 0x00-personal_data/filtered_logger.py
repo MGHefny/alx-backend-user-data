@@ -40,13 +40,13 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     local_host_db = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
     name_db = os.getenv('PERSONAL_DATA_DB_NAME', '')
 
-    cnn = mysql.connector.connect(
+    cnx = mysql.connector.connect(
         user=u_name_db,
         password=u_pass,
         host=local_host_db,
         database=name_db
         )
-    return cnn
+    return cnx
 
 
 class RedactingFormatter(logging.Formatter):
