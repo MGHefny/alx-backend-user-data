@@ -7,7 +7,6 @@ import os
 import mysql.connector
 
 
-import re
 
 def filter_datum(fields, redaction, message, separator):
     pattern = re.compile(f'({"|".join(map(re.escape, fields))}){re.escape(separator)}([^ {separator}]*)')
