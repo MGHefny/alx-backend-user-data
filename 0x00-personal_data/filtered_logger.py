@@ -40,7 +40,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     host = os.get('PERSONAL_DATA_DB_HOST', 'localhost')
     name_db = os.get('PERSONAL_DATA_DB_NAME')
 
-    cnn = mysql.connector.connection(
+    cnn = mysql.connector.connection.MySQLConnection(
         user=u_name_db,
         u_pass=u_pass,
         host=host,
