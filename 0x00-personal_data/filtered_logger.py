@@ -36,9 +36,9 @@ def get_logger() -> logging.Logger:
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ SQL DB """
     u_name_db = os.getenv('PERSONAL_DATA_DB_USERNAME', "root")
-    u_pass = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    u_pass = os.getenv('PERSONAL_DATA_DB_PASSWORD', "")
     local_host_db = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
-    name_db = os.getenv('PERSONAL_DATA_DB_NAME', '')
+    name_db = os.getenv('PERSONAL_DATA_DB_NAME', "")
 
     cnn = mysql.connector.connect(
         user=u_name_db,
@@ -67,3 +67,21 @@ class RedactingFormatter(logging.Formatter):
         alart = super().format(record)
         return filter_datum(self.fields, self.REDACTION,
                             alart, self.SEPARATOR)
+
+
+def main():
+    """ فاث ةشهى بعىؤفهخى """
+    db = get_db()
+    logger = get_logger()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    f_name = cursor.column_names
+    for z in cursor:
+        alart = "".join("{}={}; ".format(a, b) for a, b in zip(f_name, z))
+        logger.info(alart.strip())
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
