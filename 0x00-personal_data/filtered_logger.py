@@ -3,9 +3,11 @@
 from typing import List
 import re
 import logging
+import os
+import mysql.connector
 
 
-PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+PII_FIELDS = ("name", "email", "phone", "ssn", "u_pass")
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -29,6 +31,21 @@ def get_logger() -> logging.Logger:
     logger.addHandler(in_format)
 
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ SQL DB """
+    u_name_db = os.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    u_pass = os.get('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    name_db = os.get('PERSONAL_DATA_DB_NAME')
+
+    cnn = mysql.connector.connection(
+        user=u_name_db,
+        u_pass=u_pass,
+        host=host,
+        database=name_db)
+    return cnn
 
 
 class RedactingFormatter(logging.Formatter):
