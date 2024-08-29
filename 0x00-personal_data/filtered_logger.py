@@ -8,6 +8,11 @@ import mysql.connector
 
 
 
-def filter_datum(fields, redaction, message, separator):
-    pattern = re.compile(f'({"|".join(map(re.escape, fields))}){re.escape(separator)}([^ {separator}]*)')
-    return pattern.sub(lambda m: f'{m.group(1)}{separator}{redaction}', message)
+
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
+    """  """
+    for f in fields:
+        message = re.sub(f'{f}=.*?{separator}',
+                         f'{f}={redaction}{separator}', message)
+    return message
