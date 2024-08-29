@@ -35,10 +35,10 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ SQL DB """
-    u_name_db = os.get('PERSONAL_DATA_DB_USERNAME', 'root')
-    u_pass = os.get('PERSONAL_DATA_DB_PASSWORD', '')
-    local_host_db = os.get('PERSONAL_DATA_DB_HOST', 'localhost')
-    name_db = os.get('PERSONAL_DATA_DB_NAME')
+    u_name_db = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    u_pass = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    local_host_db = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    name_db = os.getenv('PERSONAL_DATA_DB_NAME')
 
     cnn = mysql.connector.connection.MySQLConnection(
         user=u_name_db,
