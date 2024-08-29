@@ -33,6 +33,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
+'''
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ SQL DB """
     u_name_db = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
@@ -40,13 +41,26 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     local_host_db = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     name_db = os.getenv('PERSONAL_DATA_DB_NAME', '')
 
-    cnn = mysql.connector.connect(
-        user=u_name_db,
+    cnn = mysql.connector.connect(user=u_name_db,
         password=u_pass,
         host=local_host_db,
         database=name_db
         )
-    return cnn
+    return cnn'''
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    """
+    user = os.getenv('PERSONAL_DATA_DB_USERNAME') or "root"
+    passwd = os.getenv('PERSONAL_DATA_DB_PASSWORD') or ""
+    host = os.getenv('PERSONAL_DATA_DB_HOST') or "localhost"
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
+    conn = mysql.connector.connect(user=user,
+                                   password=passwd,
+                                   host=host,
+                                   database=db_name)
+    return conn
 
 
 class RedactingFormatter(logging.Formatter):
