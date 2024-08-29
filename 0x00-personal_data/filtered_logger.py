@@ -3,7 +3,7 @@
 from typing import List
 import re
 import logging
-import os
+from os import environ
 import mysql.connector.connection
 
 
@@ -35,18 +35,17 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ SQL DB """
-    u_name_db = os.getenv('PERSONAL_DATA_DB_USERNAME', "root")
-    u_pass = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
-    local_host_db = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
-    name_db = os.getenv('PERSONAL_DATA_DB_NAME', '')
+    u_name_db = environ.get('PERSONAL_DATA_DB_USERNAME', "root")
+    u_pass = environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    local_host_db = environ.get('PERSONAL_DATA_DB_HOST', "localhost")
+    name_db = environ.get('PERSONAL_DATA_DB_NAME', '')
 
-    cnx = mysql.connector.connect(
-        user=u_name_db,
+    cnn = mysql.connector.connect(user=u_name_db,
         password=u_pass,
         host=local_host_db,
         database=name_db
         )
-    return cnx
+    return cnn
 
 
 class RedactingFormatter(logging.Formatter):
