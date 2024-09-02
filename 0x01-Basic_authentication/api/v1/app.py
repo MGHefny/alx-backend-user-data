@@ -42,7 +42,7 @@ def forbidden_error(error) -> str:
 
 
 @app.before_request
-def before_req():
+def before_req() -> str:
     """ auth request
     """
     if auth:
