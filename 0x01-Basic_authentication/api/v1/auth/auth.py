@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """ module auth cls
 """
+from flask import request
 import re
 from typing import List, TypeVar
-from flask import request
 
 
 class Auth:
@@ -32,7 +32,7 @@ class Auth:
             return None
         return request.headers.get("Authorization", None)
 
-    def current_user(self, request=None) -> TypeVar('User'): # type: ignore
+    def current_user(self, request=None) -> None:
         """ user request
         """
         return None
