@@ -90,8 +90,7 @@ class BasicAuth(Auth):
             if access is not None:
                 d_decode = z(access)
                 if d_decode is not None:
-                    u_mail = i(d_decode)
-                    u_pass = i(d_decode)
+                    u_mail, u_pass = i(d_decode)
                     if u_mail is not None:
                         return n(u_mail, u_pass)
         return
