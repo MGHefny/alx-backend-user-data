@@ -74,3 +74,24 @@ class BasicAuth(Auth):
             if srch.is_valid_password(user_pwd):
                 return srch
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+        return request user
+        """
+        x = self.authorization_header
+        y = self.extract_base64_authorization_header
+        z = self.decode_base64_authorization_header
+        i = self.extract_user_credentials
+        n = self.user_object_from_credentials
+        a_head = x(request)
+        if a_head is not None:
+            access = y(a_head)
+            if access is not None:
+                d_decode = z(access)
+                if d_decode is not None:
+                    u_mail = i(d_decode)
+                    u_pass = i(d_decode)
+                    if u_mail is not None:
+                        return n(u_mail, u_pass)
+        return
