@@ -26,7 +26,9 @@ class BasicAuth(Auth):
     def decode_base64_authorization_header(self,
                                            base64_authorization_header: str
                                            ) -> str:
-        """ str base decode """
+        """
+        str base decode
+        """
         if base64_authorization_header is None:
             return None
         if not isinstance(base64_authorization_header, str):
@@ -54,3 +56,22 @@ class BasicAuth(Auth):
         u_mail = sty.split(":")[0]
         u_pass = sty[len(u_mail) + 1:]
         return (u_mail, u_pass)
+
+    def user_object_from_credentials(self, user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
+        """
+        return user by u_mail and u_pass
+        """
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+        try:
+            check_user = User.search({'email': user_email})
+        except Exception:
+            return None
+
+        for srch in check_user:
+            if srch.is_valid_password(user_pwd):
+                return srch
+        return None
