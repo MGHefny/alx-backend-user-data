@@ -26,7 +26,6 @@ class SessionExpAuth(SessionAuth):
     def create_session(self, user_id=None):
         """ create user
         """
-        x = self.user_id_by_session_id
 
         session_id = super().create_session(user_id)
 
@@ -38,7 +37,7 @@ class SessionExpAuth(SessionAuth):
             "created_at": datetime.now()
         }
 
-        x[session_id] = s_d
+        self.user_id_by_session_id[session_id] = s_d
 
         return session_id
 
