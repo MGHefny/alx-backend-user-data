@@ -39,7 +39,7 @@ class Auth:
         """
         return None
 
-    def session_cookie(self, request=None):
+    def session_cookie(self, request=None) -> str:
         """ session name cookie
         """
         x = request.cookies.get
