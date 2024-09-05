@@ -56,6 +56,7 @@ def before_req() -> str:
         if auth.require_auth(request.path, excluded_paths):
             a_head = auth.authorization_header(request)
             a_user = auth.current_user(request)
+            request.current_user = a_user
             if a_head is None:
                 abort(401)
             if a_user is None:
