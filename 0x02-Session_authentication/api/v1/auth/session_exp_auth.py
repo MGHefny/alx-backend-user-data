@@ -1,53 +1,73 @@
 #!/usr/bin/env python3
 """ model ex authentcation
 """
-import os
-import re
-from flask import request
+from api.v1.auth.session_auth import SessionAuth
 from datetime import datetime, timedelta
-
-from .session_auth import SessionAuth
+from models.user import User
+from os import getenv
 
 
 class SessionExpAuth(SessionAuth):
     """ cls authentcation
     """
 
-    def __init__(self) -> None:
-        """ init main fun
+    def __init__(self):
         """
-        super().__init__()
-        s_d = os.getenv('SESSION_DURATION')
+        """
+        S_D = getenv('SESSION_DURATION')
 
-        if s_d.isdigit() or (s_d.startswith('-') and s_d[1:].isdigit()):
-            self.session_duration = int(s_d)
-        else:
-            self.session_duration = 0
+        try:
+            s_d = int(S_D)
+        except Exception:
+            s_d = 0
+
+        self.s_d = s_d
 
     def create_session(self, user_id=None):
         """ create user
         """
-        session_id = super().create_session(user_id)
-        if session_id is None:
+        x = self.user_id_by_session_id
+
+        s_id = super().create_session(user_id)
+
+        if s_id is None:
             return None
-        self.user_id_by_session_id[session_id] = {
-            'user_id': user_id,
-            'created_at': datetime.now(),
+
+        s_d = {
+            "user_id": user_id,
+            "created_at": datetime.now()
         }
-        return session_id
+
+        x[s_id] = s_d
+
+        return s_id
 
     def user_id_for_session_id(self, session_id=None):
         """ finde user in session
         """
-        if session_id in self.user_id_by_session_id:
-            dc_se = self.user_id_by_session_id[session_id]
-            if self.session_duration > 0:
-                return None
-            if 'created_at' not in dc_se:
-                return None
-            ex_t = datetime.now()
-            s_t = timedelta(seconds=self.session_duration)
-            d_t = dc_se['created_at'] + s_t
-            if d_t < ex_t:
-                return None
-            return dc_se['user_id']
+
+        if session_id is None:
+            return None
+
+        if session_id not in self.user_id_by_session_id.keys():
+            return None
+
+        s_d = self.user_id_by_session_id.get(session_id)
+
+        if s_d is None:
+            return None
+
+        if self.s_d <= 0:
+            return s_d.get('user_id')
+
+        created_at = s_d.get('created_at')
+
+        if created_at is None:
+            return None
+
+        ex_time = created_at + timedelta(seconds=self.s_d)
+
+        if ex_time < datetime.now():
+            return None
+
+        return s_d.get('user_id')
