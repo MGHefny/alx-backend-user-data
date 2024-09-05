@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Module of Expiration of Session Authentication
+""" model ex authentcation
 """
 from api.v1.auth.session_auth import SessionAuth
 from datetime import datetime, timedelta
@@ -8,7 +8,7 @@ from os import getenv
 
 
 class SessionExpAuth(SessionAuth):
-    """
+    """ cls authentcation
     """
 
     def __init__(self):
@@ -24,13 +24,13 @@ class SessionExpAuth(SessionAuth):
         self.s_d = s_d
 
     def create_session(self, user_id=None):
-        """
+        """ create user
         """
         x = self.user_id_by_session_id
 
-        s_id = super().create_session(user_id)
+        session_id = super().create_session(user_id)
 
-        if s_id is None:
+        if session_id is None:
             return None
 
         s_d = {
@@ -38,12 +38,12 @@ class SessionExpAuth(SessionAuth):
             "created_at": datetime.now()
         }
 
-        x[s_id] = s_d
+        x[session_id] = s_d
 
-        return s_id
+        return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """
+        """ finde user in session
         """
 
         if session_id is None:
