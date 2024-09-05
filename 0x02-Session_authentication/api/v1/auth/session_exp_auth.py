@@ -26,10 +26,11 @@ class SessionExpAuth(SessionAuth):
     def create_session(self, user_id=None):
         """ create user
         """
+        x = self.user_id_by_session_id
 
-        session_id = super().create_session(user_id)
+        s_id = super().create_session(user_id)
 
-        if session_id is None:
+        if s_id is None:
             return None
 
         s_d = {
@@ -37,9 +38,9 @@ class SessionExpAuth(SessionAuth):
             "created_at": datetime.now()
         }
 
-        self.user_id_by_session_id[session_id] = s_d
+        x[s_id] = s_d
 
-        return session_id
+        return s_id
 
     def user_id_for_session_id(self, session_id=None):
         """ finde user in session
