@@ -47,11 +47,10 @@ class SessionAuth(Auth):
         """
         x = self.session_cookie(request)
         y = self.user_id_for_session_id(x)
-        z = self.user_id_by_session_id
         if request is None or x is None:
             return False
         if y is None:
             return False
-        if x in z:
-            del z[x]
+        if x in self.user_id_by_session_id:
+            del self.user_id_by_session_id[x]
         return True
