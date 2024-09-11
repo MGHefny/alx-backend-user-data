@@ -15,4 +15,4 @@ class User(Base):
     email = Column(String(200), nullable=False)
     hashed_password = Column(String(250), nullable=False)
     session_id = Column(String(50), nullable=True)
-    reset_token = Column(String(300), nullable=True)
+    reset_token = Column(String(250), nullable=True)
