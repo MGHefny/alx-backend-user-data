@@ -4,9 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import InvalidRequestError
-from sqlalchemy.orm.exc import NoResultFound
-from typing import TypeVar
+
 from user import Base, User
 
 
@@ -34,7 +32,7 @@ class DB:
     def add_user(self, email: str, hashed_password: str) -> User:
         """
         """
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
+        n_user = User(email=email, hashed_password=hashed_password)
+        self._session.add(n_user)
         self._session.commit()
-        return user
+        return n_user
