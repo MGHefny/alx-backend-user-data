@@ -40,18 +40,13 @@ class DB:
         return n_user
 
     def find_user_by(self, **kwargs) -> User:
-        """ """
-        if not kwargs:
-            raise InvalidRequestError
-
-        record = User.__table__.columns.keys()
-        for x in kwargs.keys():
-            if x not in record:
+        """
+        """
+        record = self._session.query(User)
+        for x, y in kwargs.items():
+            if x not in User.__dict__:
                 raise InvalidRequestError
-
-        u_rec = self._session.query(User).filter_by(**kwargs).first()
-
-        if u_rec is None:
-            raise NoResultFound
-
-        return u_rec
+            for z in record:
+                if getattr(z, x) == y:
+                    return z
+        raise NoResultFound
