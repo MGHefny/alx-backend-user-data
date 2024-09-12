@@ -55,5 +55,49 @@ def logout() -> str:
     return redirect("/")
 
 
+@app.route("/profile", methods=["GET"], strict_slashes=False)
+def profile() -> str:
+    """ user profile
+    """
+    session_id = request.cookies.get("session_id")
+    u = AUTH.get_user_from_session_id(session_id)
+    if u is None:
+        abort(403)
+    return jsonify({"email": u.email})
+
+
+@app.route("/reset_password", methods=["POST"], strict_slashes=False)
+def get_reset_password_token() -> str:
+    """ res pass
+    """
+    email = request.form.get("email")
+    res_paw = None
+    try:
+        res_paw = AUTH.get_reset_password_token(email)
+    except ValueError:
+        res_paw = None
+    if res_paw is None:
+        abort(403)
+    return jsonify({"email": email, "reset_token": res_paw})
+
+
+@app.route("/reset_password", methods=["PUT"], strict_slashes=False)
+def update_password() -> str:
+    """ new pass
+    """
+    email = request.form.get("email")
+    res_paw = request.form.get("reset_token")
+    n_paw = request.form.get("new_password")
+    state_change = False
+    try:
+        AUTH.update_password(res_paw, n_paw)
+        state_change = True
+    except ValueError:
+        state_change = False
+    if not state_change:
+        abort(403)
+    return jsonify({"email": email, "message": "Password updated"})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")

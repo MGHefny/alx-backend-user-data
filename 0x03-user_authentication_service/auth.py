@@ -77,12 +77,10 @@ class Auth:
         x = self._db
         if session_id is None:
             return None
-
         try:
             u = x.find_user_by(session_id=session_id)
         except NoResultFound:
             return None
-
         return u
 
     def destroy_session(self, user_id: int) -> None:
@@ -93,7 +91,30 @@ class Auth:
             u = x.find_user_by(id=user_id)
         except NoResultFound:
             return None
-
         x.update_user(u.id, session_id=None)
-
         return None
+
+    def get_reset_password_token(self, email: str) -> str:
+        """ res pass
+        """
+        x = self._db
+        try:
+            u = x.find_user_by(email=email)
+        except NoResultFound:
+            raise ValueError
+        reset_token = _generate_uuid()
+        x.update_user(u.id, reset_token=reset_token)
+        return reset_token
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """ new pass
+        """
+        x = self._db
+        if reset_token is None or password is None:
+            return None
+        try:
+            u = x.find_user_by(reset_token=reset_token)
+        except NoResultFound:
+            raise ValueError
+        hashed_password = _hash_password(password)
+        x.update_user(u.id, hashed_password=hashed_password, reset_token=None)
