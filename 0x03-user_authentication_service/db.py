@@ -7,7 +7,7 @@ from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
-from user import Base, User
+from u_rec import Base, User
 
 
 class DB:
@@ -32,7 +32,7 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """ add new user
+        """ add new u_rec
         """
         n_user = User(email=email, hashed_password=hashed_password)
         self._session.add(n_user)
@@ -40,13 +40,18 @@ class DB:
         return n_user
 
     def find_user_by(self, **kwargs) -> User:
-        """
-        """
-        record = self._session.query(User)
-        for x, y in kwargs.items():
-            if x not in User.__dict__:
+        """ """
+        if not kwargs:
+            raise InvalidRequestError
+
+        record = User.__table__.columns.keys()
+        for x in kwargs.keys():
+            if x not in record:
                 raise InvalidRequestError
-            for z in record:
-                if getattr(z, x) == y:
-                    return z
-        raise NoResultFound
+
+        u_rec = self._session.query(User).filter_by(**kwargs).first()
+
+        if u_rec is None:
+            raise NoResultFound
+
+        return u_rec
