@@ -52,13 +52,10 @@ class Auth:
             u = x.find_user_by(email=email)
         except NoResultFound:
             return False
-
         u_paw = u.hashed_password
         hash_paw = password.encode("utf-8")
-
         if bcrypt.checkpw(hash_paw, u_paw):
             return True
-
         return False
 
     def create_session(self, email: str) -> str:
@@ -69,9 +66,6 @@ class Auth:
             u = x.find_user_by(email=email)
         except NoResultFound:
             return None
-
         session_id = _generate_uuid()
-
         x.update_user(u.id, session_id=session_id)
-
         return session_id
