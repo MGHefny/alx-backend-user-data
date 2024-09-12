@@ -40,7 +40,7 @@ class DB:
         return n_user
 
     def find_user_by(self, **kwargs) -> User:
-        """
+        """ serch user
         """
         record = self._session.query(User)
         for x, y in kwargs.items():
@@ -50,3 +50,18 @@ class DB:
                 if getattr(z, x) == y:
                     return z
         raise NoResultFound
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """ edit user
+        """
+        f_user = self.find_user_by(id=user_id)
+
+        record = User.__table__.columns.keys()
+        for x in kwargs.keys():
+            if x not in record:
+                raise ValueError
+
+        for x, y in kwargs.items():
+            setattr(f_user, x, y)
+
+        self._session.commit()
