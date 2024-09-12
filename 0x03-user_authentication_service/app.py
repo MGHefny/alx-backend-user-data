@@ -15,7 +15,7 @@ def home() -> str:
     return jsonify({"message": "Bienvenue"})
 
 
-@app.route("/c_user", methods=["POST"], strict_slashes=False)
+@app.route("/users", methods=["POST"], strict_slashes=False)
 def c_user() -> str:
     """ user post
     """
