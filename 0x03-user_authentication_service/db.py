@@ -7,7 +7,7 @@ from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
-from u_rec import Base, User
+from user import Base, User
 
 
 class DB:
