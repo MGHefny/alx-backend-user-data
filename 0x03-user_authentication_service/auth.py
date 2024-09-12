@@ -13,6 +13,7 @@ def _hash_password(password: str) -> str:
     encript_paw = bcrypt.hashpw(x, y)
     return encript_paw
 
+
 class Auth:
     """ auth cls
     """
